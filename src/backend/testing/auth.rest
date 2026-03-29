@@ -1,0 +1,30 @@
+@baseUrl = http://localhost:8000/api/v1
+@email = test@example.com
+@password = password
+
+###
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+###
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{login.response.body.access_token}}
+Accept: application/json
+
+###
+# @name refresh
+POST {{baseUrl}}/auth/refresh
+Authorization: Bearer {{login.response.body.access_token}}
+Accept: application/json
+
+###
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{refresh.response.body.access_token}}
+Accept: application/json

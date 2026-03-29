@@ -17,9 +17,9 @@ services:
 
   # Laravel backend (PHP-FPM)
   backend:
-    build: 
-      context: ./src/backend
-      dockerfile: ../../docker/backend/Dockerfile.local
+    build:
+      context: ./src/backend/slmp.exam.test
+      dockerfile: ../../../docker/backend/Dockerfile.local
     container_name: slmp-backend
     restart: unless-stopped
     working_dir: /var/www
@@ -27,7 +27,8 @@ services:
       - ./src/backend/slmp.exam.test:/var/www/
       - ./docker/backend/.bash_history:/root/.bash_history
     depends_on:
-    - postgres
+      postgres:
+        condition: service_healthy
     expose:
       - 9000
     env_file:
@@ -35,7 +36,7 @@ services:
     networks:
       - slmp
 
-        # PostgreSQL Database
+  # PostgreSQL Database
   postgres:
     image: postgres:16-alpine
     container_name: slmp-postgres

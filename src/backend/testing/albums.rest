@@ -1,0 +1,26 @@
+@baseUrl = http://localhost:8000/api/v1
+@email = test@example.com
+@password = password
+@page = 1
+@albumId = 1
+
+###
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+###
+GET {{baseUrl}}/albums?page={{page}}
+Authorization: Bearer {{login.response.body.access_token}}
+Accept: application/json
+
+###
+GET {{baseUrl}}/albums/{{albumId}}/photos?page={{page}}
+Authorization: Bearer {{login.response.body.access_token}}
+Accept: application/json

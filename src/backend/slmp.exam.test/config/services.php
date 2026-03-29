@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'source_api' => [
+        'base_url' => env('SOURCE_API_BASE_URL', 'https://jsonplaceholder.typicode.com'),
+    ],
+
 ];

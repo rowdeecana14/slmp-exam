@@ -10,3 +10,5 @@
 
 # Ignore Docker volumes (Postgres data)
 docker/database/postgres_data/
+
+docker/.bash_history

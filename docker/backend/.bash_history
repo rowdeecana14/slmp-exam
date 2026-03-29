@@ -83,3 +83,12 @@ php artisan config:cache
 php artisan optimize
 composer require tymon/jwt-auth
 php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
+php artisan jwt:secret
+php artisan app:initialize-command 
+php artisan app:initialize-command 
+php artisan app:initialize-command 
+php artisan app:create-admin-user
+php artisan test tests/Feature
+php artisan app:initialize-command 
+php artisan app:initialize
+php artisan remote-data:sync

@@ -1,7 +1,0 @@
-docker-compose up --build -d
-docker exec -it slmp-backend
-composer global require laravel/installer
-export PATH="$PATH:/root/.composer/vendor/bin"
-laravel new slmp.exam.test
-docker compose up --build -d --force-recreate
-composer require tymon/jwt-auth
