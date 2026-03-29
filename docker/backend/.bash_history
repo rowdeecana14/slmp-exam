@@ -81,3 +81,5 @@ php artisan route:clear
 php artisan view:clear
 php artisan config:cache
 php artisan optimize
+composer require tymon/jwt-auth
+php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
