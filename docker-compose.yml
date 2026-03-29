@@ -1,0 +1,61 @@
+services:
+  # Nginx web server
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    container_name: slmp-nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./src/backend/slmp.exam.test:/var/www
+    depends_on:
+      - backend
+    networks:
+      - slmp
+
+  # Laravel backend (PHP-FPM)
+  backend:
+    build: 
+      context: ./src/backend
+      dockerfile: ../../docker/backend/Dockerfile.local
+    container_name: slmp-backend
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./src/backend/slmp.exam.test:/var/www/
+      - ./docker/backend/.bash_history:/root/.bash_history
+    depends_on:
+    - postgres
+    expose:
+      - 9000
+    env_file:
+      - ./src/backend/slmp.exam.test/.env
+    networks:
+      - slmp
+
+        # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: slmp-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: slmp
+      POSTGRES_USER: slmp
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker/database/postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U slmp"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - slmp
+
+networks:
+  slmp:
+    driver: bridge

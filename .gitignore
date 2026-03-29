@@ -1,0 +1,12 @@
+# Ignore PHP dependencies
+/vendor/
+
+# Ignore Node.js dependencies
+/node_modules/
+
+# Ignore all .env files
+*.env
+*.env.*
+
+# Ignore Docker volumes (Postgres data)
+docker/database/postgres_data/

@@ -1,0 +1,78 @@
+FROM php:8.4-fpm
+
+WORKDIR /var/www
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    TZ=UTC \
+    APP_ENV=local
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    git \
+    libcurl4-openssl-dev \
+    libfreetype6-dev \
+    libjpeg-dev \
+    libonig-dev \
+    libpq-dev \
+    libpng-dev \
+    libssl-dev \
+    libxml2-dev \
+    libzip-dev \
+    postgresql-client \
+    unzip \
+    zip \
+    nano \
+    vim \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
+RUN docker-php-ext-configure gd --with-freetype=/usr/include/freetype2 --with-jpeg=/usr/include \
+    && docker-php-ext-install \
+    bcmath \
+    curl \
+    exif \
+    gd \
+    mbstring \
+    pgsql \
+    pdo_pgsql \
+    pdo_mysql \
+    xml \
+    zip
+
+# Install PECL extensions (Redis)
+RUN pecl install -o -f redis \
+    && rm -rf /tmp/pear \
+    && docker-php-ext-enable redis
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Persistent Bash history
+RUN touch /root/.bash_history
+ENV HISTFILE=/root/.bash_history
+ENV HISTSIZE=1000
+ENV HISTFILESIZE=2000
+ENV ENV=/root/.shinit
+RUN printf '%s\n' \
+    'export HISTFILE=/root/.bash_history' \
+    'export HISTSIZE=1000' \
+    'export HISTFILESIZE=2000' \
+    'shopt -s histappend' \
+    'export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"' \
+    >> /root/.bashrc
+RUN printf '%s\n' \
+    'exec bash -il' \
+    > /root/.shinit
+
+# Copy application files
+COPY . .
+
+# Expose port
+EXPOSE 9000
+
+# Command
+CMD ["php-fpm"]
