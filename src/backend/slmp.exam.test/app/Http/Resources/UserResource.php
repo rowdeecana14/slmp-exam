@@ -16,13 +16,10 @@ class UserResource extends BaseJsonResource
             'name' => $this->name,
             'username' => $this->username,
             'email' => $this->email,
+            'address' => $this->whenRelationLoaded('address', AddressResource::class),
             'phone' => $this->phone,
             'website' => $this->website,
-            'address' => $this->whenRelationLoaded('address', AddressResource::class),
             'company' => $this->whenRelationLoaded('company', CompanyResource::class),
-            'posts_count' => $this->whenCounted('posts'),
-            'albums_count' => $this->whenCounted('albums'),
-            'todos_count' => $this->whenCounted('todos'),
         ];
     }
 }

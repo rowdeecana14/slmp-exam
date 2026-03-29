@@ -12,11 +12,9 @@ class AlbumResource extends BaseJsonResource
     public function toArray(Request $request): array
     {
         return [
+            'user_id' => $this->user_id,
             'id' => $this->id,
             'title' => $this->title,
-            'user_id' => $this->user_id,
-            'user' => UserResource::make($this->whenLoaded('user')),
-            'photos' => $this->whenRelationCollectionLoaded('photos', PhotoResource::class),
         ];
     }
 }

@@ -12,12 +12,10 @@ class PostResource extends BaseJsonResource
     public function toArray(Request $request): array
     {
         return [
+            'user_id' => $this->user_id,
             'id' => $this->id,
             'title' => $this->title,
             'body' => $this->body,
-            'user_id' => $this->user_id,
-            'user' => UserResource::make($this->whenLoaded('user')),
-            'comments' => $this->whenRelationCollectionLoaded('comments', CommentResource::class),
         ];
     }
 }

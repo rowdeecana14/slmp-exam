@@ -12,11 +12,10 @@ class TodoResource extends BaseJsonResource
     public function toArray(Request $request): array
     {
         return [
+            'user_id' => $this->user_id,
             'id' => $this->id,
             'title' => $this->title,
             'completed' => $this->completed,
-            'user_id' => $this->user_id,
-            'user' => UserResource::make($this->whenLoaded('user')),
         ];
     }
 }

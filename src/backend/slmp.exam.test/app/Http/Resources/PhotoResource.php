@@ -12,11 +12,11 @@ class PhotoResource extends BaseJsonResource
     public function toArray(Request $request): array
     {
         return [
+            'album_id' => $this->album_id,
             'id' => $this->id,
             'title' => $this->title,
             'url' => $this->url,
             'thumbnail_url' => $this->thumbnail_url,
-            'album_id' => $this->album_id,
         ];
     }
 }

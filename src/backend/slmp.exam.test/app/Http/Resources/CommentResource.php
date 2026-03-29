@@ -12,11 +12,11 @@ class CommentResource extends BaseJsonResource
     public function toArray(Request $request): array
     {
         return [
+            'post_id' => $this->post_id,
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
             'body' => $this->body,
-            'post_id' => $this->post_id,
         ];
     }
 }
